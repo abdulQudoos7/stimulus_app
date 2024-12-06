@@ -40,7 +40,7 @@ jobs:
       - name: Run Tests with Coverage
         run: |
           bundle exec bin/rails db:test:prepare
-          bundle exec rspec
+          bundle exec test
 
       - name: Format Coverage (if parallelized tests are used)
         run: |

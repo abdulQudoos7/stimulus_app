@@ -64,3 +64,4 @@ end
 gem "faker", "~> 3.5"
 gem 'simplecov', require: false
 gem "rails-controller-testing"
+gem 'codeclimate-test-reporter', '~> 0.4.8'
