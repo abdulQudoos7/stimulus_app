@@ -30,7 +30,6 @@ jobs:
           ls -l /tmp/codeclimate
           chmod +x /tmp/codeclimate
           sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
-          qlty --version
 
       - name: Notify Code Climate - Before Build
         env:
