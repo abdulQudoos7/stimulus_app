@@ -34,5 +34,5 @@ jobs:
         env:
           CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
         run: |
-          bundle exec test
+          bundle exec bin/rails db:test:prepare test test:system
           codeclimate-test-reporter
