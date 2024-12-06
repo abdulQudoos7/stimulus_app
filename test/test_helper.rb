@@ -1,3 +1,17 @@
+# Start SimpleCov for test coverage reporting
+require 'simplecov'
+SimpleCov.start 'rails' do
+  # Filters to exclude certain directories from the coverage report
+  add_filter '/bin/'
+  add_filter '/db/'
+  add_filter '/test/' # Exclude test files themselves
+end
+
+# Ensure coverage report is generated before exiting
+SimpleCov.at_exit do
+  SimpleCov.result.format!
+end
+
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
