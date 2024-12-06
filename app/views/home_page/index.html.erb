@@ -1,0 +1,13 @@
+
+<% if user_signed_in? %>
+  <%= button_to destroy_user_session_path, class: "btn btn-primary", :method => :delete  do %>
+    Logout
+  <% end %>
+<% else %>
+  <%= link_to "Sign In", new_user_session_path, class: "btn btn-success" %>
+  <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-info" %>
+<% end %>
+
+<%= link_to "Home", root_path %>
+<%= link_to "Posts", posts_path %>
+<%= link_to "Chat", rooms_path %>
