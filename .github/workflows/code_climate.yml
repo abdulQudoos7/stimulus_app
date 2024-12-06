@@ -31,11 +31,11 @@ jobs:
           chmod +x /tmp/codeclimate
           sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
 
-      
+
       - name: Run Tests with Coverage
         run: |
           bundle exec bin/rails db:test:prepare
-          bundle exec test
+          bundle exec bin/rails test
 
       - name: Format Coverage (if parallelized tests are used)
         run: |
