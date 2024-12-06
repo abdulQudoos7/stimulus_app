@@ -28,7 +28,7 @@ jobs:
         run: |
           curl --proto '=https' --tlsv1.2 -LsSf https://github.com/qltysh/qlty/releases/download/v0.460.0/qlty-installer.sh | sh
           chmod +x codeclimate
-          sudo mv codeclimate /usr/local/bin/
+          sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
           codeclimate --version  # Verify installation
 
       - name: Notify Code Climate - Before Build
