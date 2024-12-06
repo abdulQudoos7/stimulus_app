@@ -26,7 +26,8 @@ jobs:
 
       - name: Run Code Analysis
         run: |
-          curl -L https://github.com/codeclimate/codeclimate/releases/latest/download/codeclimate.tar.bz2 | tar xj
+          curl -L -o codeclimate.tar.bz2 https://github.com/codeclimate/codeclimate/releases/download/0.85.14/codeclimate.tar.bz2
+          tar xjf codeclimate.tar.bz2
           sudo mv codeclimate /usr/local/bin/
           codeclimate analyze
 
