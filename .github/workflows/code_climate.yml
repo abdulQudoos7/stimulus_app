@@ -31,12 +31,7 @@ jobs:
           chmod +x /tmp/codeclimate
           sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
 
-      - name: Notify Code Climate - Before Build
-        env:
-          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
-        run: |
-          codeclimate-test-reporter before-build
-
+      
       - name: Run Tests with Coverage
         run: |
           bundle exec bin/rails db:test:prepare
