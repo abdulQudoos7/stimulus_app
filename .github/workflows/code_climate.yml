@@ -24,13 +24,10 @@ jobs:
           bundle install
           gem install codeclimate-test-reporter
 
-#      - name: Install CodeClimate CLI
-#        run: |
-#          curl -L -o codeclimate.tar.bz2 https://github.com/codeclimate/codeclimate/releases/download/0.85.14/codeclimate.tar.bz2
-#          tar xjf codeclimate.tar.bz2
-#          sudo mv codeclimate /usr/local/bin/
-#          rm codeclimate.tar.bz2
-#          codeclimate --version  # Verify installation
+      - name: Install CodeClimate CLI
+        run: |
+          curl --proto '=https' --tlsv1.2 -LsSf https://github.com/qltysh/qlty/releases/download/v0.460.0/qlty-installer.sh | sh
+          codeclimate --version  # Verify installation
 
       - name: Notify Code Climate - Before Build
         env:
