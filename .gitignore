@@ -4,8 +4,15 @@
 # belong in git's global ignore instead:
 # `$XDG_CONFIG_HOME/git/ignore` or `~/.config/git/ignore`
 
+#Other files
+db/schema.rb
+
 # Ignore bundler config.
 /.bundle
+
+# Ignore coverage and idea files.
+/.idea
+coverage
 
 # Ignore all environment files (except templates).
 /.env*
