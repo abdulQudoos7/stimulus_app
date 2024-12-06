@@ -26,10 +26,12 @@ jobs:
 
       - name: Install CodeClimate CLI
         run: |
-          curl --proto '=https' --tlsv1.2 -LsSf https://github.com/qltysh/qlty/releases/download/v0.460.0/qlty-installer.sh | sh
-          chmod +x codeclimate
+          curl -L https://github.com/codeclimate/codeclimate/releases/latest/download/codeclimate-linux-amd64 -o /tmp/codeclimate
+          ls -l /tmp/codeclimate
+          chmod +x /tmp/codeclimate
           sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
-          codeclimate --version  # Verify installation
+          codeclimate --version
+          qlty --version
 
       - name: Notify Code Climate - Before Build
         env:
