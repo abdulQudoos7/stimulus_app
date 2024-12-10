@@ -47,13 +47,18 @@ jobs:
 
       - name: Format coverage
         run: |
-          cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/coverage.json
+          cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/coverage.json          
 
-      - name: Show coverage
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+      - name: Check coverage file content
+        run: cat coverage/coverage.json
+
+      - name: Check if coverage file exists and contains data
         run: |
-          cc-test-reporter show-coverage coverage/coverage.json --debug
+          if [[ ! -f coverage/coverage.json ]] || [[ ! -s coverage/coverage.json ]]; then
+            echo "Coverage file is missing or empty"
+            exit 1
+          fi
+          cat coverage/coverage.json
 
       - name: Upload coverage
         env:
