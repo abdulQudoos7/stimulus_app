@@ -63,6 +63,8 @@ jobs:
       - name: Upload coverage
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+          codeClimateCoverage: "true"
+          codeClimateCoverageLocations: ${{ github.workspace }}/coverage/coverage.json:simplecov
         run: |
           cc-test-reporter upload-coverage
 
