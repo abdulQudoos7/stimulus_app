@@ -38,18 +38,22 @@ jobs:
           bundle exec bin/rails test
 
       - name: Format Coverage (if parallelized tests are used)
+        env:
+          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
         run: |
-          codeclimate-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage/.coverage.json
+          codeclimate-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage/coverage.json
 
       - name: Sum Coverage (if parallelized tests are used)
+        env:
+          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
         run: |
-          codeclimate-test-reporter sum-coverage --input-type simplecov-multi --output-path coverage/.coverage.json
+          codeclimate-test-reporter sum-coverage --input-type simplecov-multi --output-path coverage/coverage.json
 
       - name: Upload Coverage to Code Climate
         env:
           CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
           run: |
-            echo "CODECLIMATE_REPO_TOKEN is set to $CODECLIMATE_REPO_TOKEN"
+            echo "CODECLIMATE_REPO_TOKEN is set to ${{ secrets.CODECLIMATE_REPO_TOKEN }}"
         run: |
           codeclimate-test-reporter upload-coverage
 
