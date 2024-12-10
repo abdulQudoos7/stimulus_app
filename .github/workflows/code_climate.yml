@@ -1,0 +1,62 @@
+name: Code Climate Analysis
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  code_analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.0  # Replace with your Ruby version
+
+      - name: Install Dependencies
+        run: |
+          bundle install
+          gem install codeclimate-test-reporter
+
+      - name: Install CodeClimate CLI
+        run: |
+          curl -L https://github.com/codeclimate/codeclimate/releases/latest/download/codeclimate-linux-amd64 -o /tmp/codeclimate
+          ls -l /tmp/codeclimate
+          chmod +x /tmp/codeclimate
+          sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
+
+
+      - name: Run Tests with Coverage
+        run: |
+          bundle exec bin/rails db:test:prepare
+          bundle exec bin/rails test
+
+      - name: Format Coverage (if parallelized tests are used)
+        env:
+          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+        run: |
+          codeclimate-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage/.resultset.json
+
+      - name: Sum Coverage (if parallelized tests are used)
+        env:
+          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+        run: |
+          codeclimate-test-reporter sum-coverage --input-type simplecov-multi --output-path coverage/.resultset.json
+
+      - name: Upload Coverage to Code Climate
+        env:
+          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+          run: |
+            echo "CODECLIMATE_REPO_TOKEN is set to ${{ secrets.CODECLIMATE_REPO_TOKEN }}"
+        run: |
+          codeclimate-test-reporter upload-coverage
+
+      - name: Run Code Analysis
+        run: |
+          codeclimate analyze

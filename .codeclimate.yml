@@ -1,0 +1,18 @@
+version: "2"
+plugins:
+  rubocop:
+    enabled: true
+checks:
+  argument-count:
+    enabled: true
+  file-lines:
+    enabled: true
+  class-coupling:
+    enabled: true
+ratings:
+  paths:
+    - "app/**/*.rb"
+exclude_paths:
+  - "db/schema.rb"
+  - "db/migrate/**"
+  - "vendor/**"
