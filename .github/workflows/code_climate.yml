@@ -28,11 +28,13 @@ jobs:
 
       - name: Install Code Climate test reporter
         run: |
-          curl -L https://github.com/codeclimate/test-reporter/releases/download/v1.0.0/cc-test-reporter-linux-amd64 > /usr/local/bin/cc-test-reporter
+          curl -L https://github.com/codeclimate/test-reporter/releases/download/v0.10.0/cc-test-reporter-linux-amd64 -o /usr/local/bin/cc-test-reporter
           chmod +x /usr/local/bin/cc-test-reporter
+          ls -lh /usr/local/bin/
 
       - name: cc-test-reporter file
         run: |
+          file /usr/local/bin/cc-test-reporter
           cat /usr/local/bin/cc-test-reporter
 
       - name: Verify cc-test-reporter installation
