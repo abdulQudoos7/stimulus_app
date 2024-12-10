@@ -33,6 +33,7 @@ jobs:
 
       - name: Verify cc-test-reporter installation
         run:
+          which cc-test-reporter
           cc-test-reporter --version
 
       - name: Prepare coverage report
