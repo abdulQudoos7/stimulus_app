@@ -32,7 +32,9 @@ jobs:
           chmod +x /usr/local/bin/cc-test-reporter
 
       - name: Verify cc-test-reporter installation
-        run: cc-test-reporter --version
+        run:
+          ls /usr/local/bin
+          cc-test-reporter --version
 
 
       - name: Prepare coverage report
