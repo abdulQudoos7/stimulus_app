@@ -31,24 +31,19 @@ jobs:
           chmod +x /tmp/codeclimate
           sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
 
-      - name: Set Up Database
-        run: |
-          bundle exec rails db:setup
-          bundle exec rails db:test:prepare
 
       - name: Run Tests with Coverage
-        env:
-          SIMPLECOV_CODECLIMATE: true  # Enables CodeClimate-compatible output
         run: |
-          bundle exec rails test
+          bundle exec bin/rails db:test:prepare
+          bundle exec bin/rails test
 
-      - name: Format Coverage (if needed for parallelized tests)
+      - name: Format Coverage (if parallelized tests are used)
         run: |
-          codeclimate-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage/.resultset.json
+          codeclimate-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage/index.html
 
-      - name: Sum Coverage (if needed for parallelized tests)
+      - name: Sum Coverage (if parallelized tests are used)
         run: |
-          codeclimate-test-reporter sum-coverage --input-type simplecov --output-path coverage/final_report.json
+          codeclimate-test-reporter sum-coverage --input-type simplecov --output-path coverage/index.html
 
       - name: Upload Coverage to Code Climate
         env:

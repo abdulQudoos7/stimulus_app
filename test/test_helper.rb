@@ -1,12 +1,5 @@
 # Start SimpleCov for test coverage reporting
 require 'simplecov'
-require 'simplecov_json_formatter'
-
-SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
-                                                                  SimpleCov::Formatter::HTMLFormatter, # Retains the HTML report
-                                                                  SimpleCov::Formatter::JSONFormatter  # Generates JSON output
-                                                                ])
-
 SimpleCov.start 'rails' do
   # Filters to exclude certain directories from the coverage report
   add_filter '/bin/'
