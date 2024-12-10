@@ -48,6 +48,18 @@ jobs:
       - name: Format coverage
         run: |
           cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/coverage.json
+          
+
+      - name: Check coverage file content
+        run: cat coverage/coverage.json
+
+      - name: Check if coverage file exists and contains data
+        run: |
+          if [[ ! -f coverage/coverage.json ]] || [[ ! -s coverage/coverage.json ]]; then
+            echo "Coverage file is missing or empty"
+            exit 1
+          fi
+          cat coverage/coverage.json
 
       - name: Upload coverage
         env:
@@ -66,7 +78,7 @@ jobs:
             exit 1
           else
             echo "Coverage is above 80%. Proceeding with upload."
-            cc-test-reporter upload-coverage --file coverage/codeclimate.json
+            cc-test-reporter upload-coverage --file coverage/coverage.json
           fi
     
 
