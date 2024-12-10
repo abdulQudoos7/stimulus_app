@@ -45,6 +45,20 @@ jobs:
         run: |
           echo "CODECLIMATE_REPO_TOKEN is set: ${{ secrets.CODECLIMATE_REPO_TOKEN }}"
 
+
+      - name: Format Coverage (if parallelized tests are used)
+        env:
+          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+        run: |
+          ls -l coverage/
+          codeclimate-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage.json --debug > debug_output.log 2>&1
+
+      - name: Sum Coverage (if parallelized tests are used)
+        env:
+          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+        run: |
+          codeclimate-test-reporter sum-coverage --input-type simplecov --output-path coverage.json
+
       - name: Upload Coverage to Code Climate
         env:
           CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
