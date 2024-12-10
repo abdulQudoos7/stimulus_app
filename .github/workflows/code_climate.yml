@@ -36,6 +36,8 @@ jobs:
           ls /usr/local/bin
           cc-test-reporter --version
 
+      - name: Checking Test Reporter
+        run: ls /usr/local/bin
 
       - name: Prepare coverage report
         run: |
