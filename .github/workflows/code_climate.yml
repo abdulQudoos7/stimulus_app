@@ -54,7 +54,7 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
         run: |
           # Check test coverage status by passing the coverage file
-          COVERAGE_STATUS=$(cc-test-reporter show-coverage --file coverage/coverage.json --debug)
+          COVERAGE_STATUS=$(cc-test-reporter show-coverage coverage/coverage.json --debug)
 
           # Print the coverage status
           echo "Coverage status: $COVERAGE_STATUS"
