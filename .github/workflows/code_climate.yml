@@ -47,14 +47,14 @@ jobs:
 
       - name: Format coverage
         run: |
-          cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/coverage.json --debug
+          cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/coverage.json
 
       - name: Upload coverage
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
         run: |
-          # Check test coverage status
-          COVERAGE_STATUS=$(cc-test-reporter show-coverage --debug)
+          # Check test coverage status by passing the coverage file
+          COVERAGE_STATUS=$(cc-test-reporter show-coverage --file coverage/coverage.json --debug)
 
           # Print the coverage status
           echo "Coverage status: $COVERAGE_STATUS"
@@ -66,7 +66,7 @@ jobs:
             exit 1
           else
             echo "Coverage is above 80%. Proceeding with upload."
-            cc-test-reporter upload-coverage
+            cc-test-reporter upload-coverage --file coverage/codeclimate.json
           fi
     
 
