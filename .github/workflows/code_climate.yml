@@ -52,7 +52,7 @@ jobs:
 
       - name: Upload Coverage to Code Climate
         env:
-          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
+          CODECLIMATE_REPO_TOKEN: "62389695e502022682d5ad2c68bc00b99ab5686f9103745e049f66d6bb0da56e"
         run: |
           codeclimate-test-reporter upload-coverage
 
