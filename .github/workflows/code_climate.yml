@@ -40,7 +40,7 @@ jobs:
       - name: Check if coverage file exists
         run: |
           ls -l coverage/
-          cat coverage/.coverage.json
+          cat coverage/coverage.json
 
       - name: Print Environment Variables
         run: |
