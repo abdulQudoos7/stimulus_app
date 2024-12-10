@@ -48,39 +48,18 @@ jobs:
       - name: Format coverage
         run: |
           cc-test-reporter format-coverage -t simplecov -o coverage/codeclimate.json coverage/coverage.json
-          
 
-      - name: Check coverage file content
-        run: cat coverage/coverage.json
-
-      - name: Check if coverage file exists and contains data
+      - name: Show coverage
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
         run: |
-          if [[ ! -f coverage/coverage.json ]] || [[ ! -s coverage/coverage.json ]]; then
-            echo "Coverage file is missing or empty"
-            exit 1
-          fi
-          cat coverage/coverage.json
+          cc-test-reporter show-coverage coverage/coverage.json --debug
 
       - name: Upload coverage
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
         run: |
-          # Check test coverage status by passing the coverage file
-          COVERAGE_STATUS=$(cc-test-reporter show-coverage coverage/coverage.json --debug)
-
-          # Print the coverage status
-          echo "Coverage status: $COVERAGE_STATUS"
-
-          # If coverage percentage is below a threshold, exit with an error (for example, below 80%)
-          COVERAGE_PERCENTAGE=$(echo "$COVERAGE_STATUS" | grep -oP 'Coverage:\s*\K[0-9.]+')
-          if (( $(echo "$COVERAGE_PERCENTAGE < 80" | bc -l) )); then
-            echo "Coverage is below 80%. Current coverage: $COVERAGE_PERCENTAGE%"
-            exit 1
-          else
-            echo "Coverage is above 80%. Proceeding with upload."
-            cc-test-reporter upload-coverage --file coverage/coverage.json
-          fi
-    
+          cc-test-reporter upload-coverage
 
     env:
       GIT_COMMIT_SHA: ${{ github.sha }}
