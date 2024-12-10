@@ -1,70 +1,53 @@
-name: Code Climate Analysis
+name: Continuous Integration
 
 on:
   push:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
-  code_analysis:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.1.0  # Replace with your Ruby version
+          ruby-version: '3.0'
+          bundler-cache: true
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           bundle install
-          gem install codeclimate-test-reporter
 
-      - name: Install CodeClimate CLI
+      - name: Install Code Climate test reporter
         run: |
-          curl -L https://github.com/codeclimate/codeclimate/releases/latest/download/codeclimate-linux-amd64 -o /tmp/codeclimate
-          ls -l /tmp/codeclimate
-          chmod +x /tmp/codeclimate
-          sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
+          curl -L https://github.com/codeclimate/test-reporter/releases/download/v1.0.0/cc-test-reporter-linux-amd64 > /usr/local/bin/cc-test-reporter
+          chmod +x /usr/local/bin/cc-test-reporter
 
+      - name: Prepare coverage report
+        run: |
+          cc-test-reporter before-build
 
-      - name: Run Tests with Coverage
+      - name: Run tests
         run: |
           bundle exec bin/rails db:test:prepare
           bundle exec bin/rails test
 
-      - name: Check if coverage file exists
+      - name: Format coverage
         run: |
-          ls -l coverage/
+          cc-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage/coverage.json
 
-      - name: Print Environment Variables
+      - name: Upload coverage
         run: |
-          echo "CODECLIMATE_REPO_TOKEN is set: ${{ secrets.CODECLIMATE_REPO_TOKEN }}"
+          cc-test-reporter upload-coverage
 
-
-      - name: Format Coverage (if parallelized tests are used)
-        env:
-          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
-        run: |
-          ls -l coverage/
-          codeclimate-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage.json --debug > debug_output.log 2>&1
-
-      - name: Sum Coverage (if parallelized tests are used)
-        env:
-          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
-        run: |
-          codeclimate-test-reporter sum-coverage --input-type simplecov --output-path coverage.json
-
-      - name: Upload Coverage to Code Climate
-        env:
-          CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
-        run: |
-          codeclimate-test-reporter upload-coverage
-
-      - name: Run Code Analysis
-        run: |
-          codeclimate analyze
+    env:
+      GIT_COMMIT_SHA: ${{ github.sha }}
+      GIT_BRANCH: ${{ github.ref }}
