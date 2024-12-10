@@ -44,14 +44,14 @@ jobs:
 
       - name: Print Environment Variables
         run: |
-          echo "CODECLIMATE_REPO_TOKEN is set: $CODECLIMATE_REPO_TOKEN"
+          echo "CODECLIMATE_REPO_TOKEN is set: ${{ secrets.CODECLIMATE_REPO_TOKEN }}"
 
 
       - name: Format Coverage (if parallelized tests are used)
         env:
           CODECLIMATE_REPO_TOKEN: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
         run: |
-          codeclimate-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage/coverage.json
+          codeclimate-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage/coverage.json --debug
 
       - name: Sum Coverage (if parallelized tests are used)
         env:
