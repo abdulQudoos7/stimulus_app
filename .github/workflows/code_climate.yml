@@ -53,7 +53,22 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPO_TOKEN }}
         run: |
-          cc-test-reporter upload-coverage
+          # Check test coverage status
+          COVERAGE_STATUS=$(cc-test-reporter show-coverage --debug)
+
+          # Print the coverage status
+          echo "Coverage status: $COVERAGE_STATUS"
+
+          # If coverage percentage is below a threshold, exit with an error (for example, below 80%)
+          COVERAGE_PERCENTAGE=$(echo "$COVERAGE_STATUS" | grep -oP 'Coverage:\s*\K[0-9.]+')
+          if (( $(echo "$COVERAGE_PERCENTAGE < 80" | bc -l) )); then
+            echo "Coverage is below 80%. Current coverage: $COVERAGE_PERCENTAGE%"
+            exit 1
+          else
+            echo "Coverage is above 80%. Proceeding with upload."
+            cc-test-reporter upload-coverage
+          fi
+    
 
     env:
       GIT_COMMIT_SHA: ${{ github.sha }}
