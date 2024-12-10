@@ -28,12 +28,14 @@ jobs:
 
       - name: Install Code Climate test reporter
         run: |
-          curl -L https://github.com/codeclimate/test-reporter/releases/download/v1.0.0/cc-test-reporter-linux-amd64 > /usr/local/bin/cc-test-reporter
-          chmod +x /usr/local/bin/cc-test-reporter
+          curl -L https://github.com/codeclimate/codeclimate/releases/latest/download/codeclimate-linux-amd64 -o /tmp/codeclimate
+          ls -l /tmp/codeclimate
+          chmod +x /tmp/codeclimate
+          sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
 
       - name: Prepare coverage report
         run: |
-          cc-test-reporter before-build
+          codeclimate before-build
 
       - name: Run tests
         run: |
@@ -42,11 +44,11 @@ jobs:
 
       - name: Format coverage
         run: |
-          cc-test-reporter format-coverage --coverage-input-type simplecov --coverage-input-path coverage/coverage.json
+          codeclimate format-coverage --coverage-input-type simplecov --coverage-input-path coverage/coverage.json
 
       - name: Upload coverage
         run: |
-          cc-test-reporter upload-coverage
+          codeclimate upload-coverage
 
     env:
       GIT_COMMIT_SHA: ${{ github.sha }}
