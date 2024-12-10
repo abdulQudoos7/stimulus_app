@@ -33,6 +33,9 @@ jobs:
           chmod +x /tmp/codeclimate
           sudo mv /tmp/codeclimate /usr/local/bin/codeclimate
 
+      - name: Verify cc-test-reporter installation
+        run: cc-test-reporter --version
+
       - name: Prepare coverage report
         run: |
           codeclimate before-build
